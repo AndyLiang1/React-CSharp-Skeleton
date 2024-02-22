@@ -13,9 +13,9 @@ namespace Server.Controllers
     [ApiController]
     public class TodoItemsController : ControllerBase
     {
-        private readonly TodoContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public TodoItemsController(TodoContext context)
+        public TodoItemsController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -24,11 +24,14 @@ namespace Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TodoItemDTO>>> GetTodoItems()
         {
-            // return await _context.TodoItems.OrderBy(todo => todo.Name)
-            // .Select(x => ItemToDTO(x))
+            return await _context.TodoItems
+            .OrderBy(todo => todo.Name)
+            .Include(item => item.Notes)
+            .Select(x => ItemToDTO(x))
+            .ToListAsync();
+            // var todoItems = await _context.TodoItems.Where(item => item.Name == "ga")
             // .ToListAsync();
-            var todoItems = await _context.TodoItems.Where(item => item.Name == "ga").ToListAsync();
-            return todoItems.Select(x => ItemToDTO(x)).ToList();
+            // return todoItems.Select(x => ItemToDTO(x)).ToList();
         }
 
         // GET: api/TodoItems/5
@@ -96,6 +99,16 @@ namespace Server.Controllers
                 Name = todoItemDTO.Name
             };
 
+            foreach (var noteContent in todoItemDTO.Notes) 
+            {
+                var note = new Note {
+                    Content = noteContent.Content,
+                    TodoItem = todoItem
+                };
+
+                todoItem.Notes.Add(note);
+            }
+
             _context.TodoItems.Add(todoItem);
             await _context.SaveChangesAsync();
 
@@ -127,7 +140,8 @@ namespace Server.Controllers
             return new TodoItemDTO {
                 Id = todoItem.Id, 
                 Name = todoItem.Name,
-                IsComplete = todoItem.IsComplete
+                IsComplete = todoItem.IsComplete,
+                Notes = todoItem.Notes
             };
         }
             

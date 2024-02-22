@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Server.Models;
 
@@ -9,8 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
-builder.Services.AddDbContext<TodoContext>(options=> 
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+});
+builder.Services.AddDbContext<ApplicationDbContext>(options=> 
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
