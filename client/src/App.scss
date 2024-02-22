@@ -1,0 +1,28 @@
+@import "bootstrap/dist/css/bootstrap.min.css";
+
+.vert-container {
+    display: flex;
+    justify-content: start;
+    text-align: center;
+    align-items: center;
+    flex-direction: column;
+}
+.horiz-container {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    align-items: center;    
+}
+
+.max-dimensions {
+    height: 100%;
+    width: 100%;
+}
+
+.bg-red {
+    background: red;
+}
+
+
+
+
