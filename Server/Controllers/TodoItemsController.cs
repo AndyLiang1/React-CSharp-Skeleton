@@ -13,7 +13,7 @@ namespace Server.Controllers
     [ApiController]
     public class TodoItemsController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+    private readonly ApplicationDbContext _context;
 
         public TodoItemsController(ApplicationDbContext context)
         {

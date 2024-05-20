@@ -11,8 +11,8 @@ using Server.Models;
 namespace Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240520183604_Note2")]
-    partial class Note2
+    [Migration("20240520201205_AddNote2")]
+    partial class AddNote2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -58,7 +58,7 @@ namespace Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Note2s");
+                    b.ToTable("Note2");
                 });
 
             modelBuilder.Entity("Server.Models.TodoItem", b =>

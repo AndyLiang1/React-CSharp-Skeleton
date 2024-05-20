@@ -55,7 +55,7 @@ namespace Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Note2s");
+                    b.ToTable("Note2");
                 });
 
             modelBuilder.Entity("Server.Models.TodoItem", b =>

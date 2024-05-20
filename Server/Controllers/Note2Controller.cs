@@ -1,15 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Server.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Server.Controllers
 {
-    public class Note2Controller : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class Note2Controller : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
@@ -18,139 +17,86 @@ namespace Server.Controllers
             _context = context;
         }
 
-        // GET: Note2
-        public async Task<IActionResult> Index()
+        // GET: api/Note2
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Note2>>> GetNote2()
         {
-            return View(await _context.Note2s.ToListAsync());
+            return await _context.Note2.ToListAsync();
         }
 
-        // GET: Note2/Details/5
-        public async Task<IActionResult> Details(long? id)
+        // GET: api/Note2/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Note2>> GetNote2(long id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var note2 = await _context.Note2.FindAsync(id);
 
-            var note2 = await _context.Note2s
-                .FirstOrDefaultAsync(m => m.Id == id);
             if (note2 == null)
             {
                 return NotFound();
             }
 
-            return View(note2);
+            return note2;
         }
 
-        // GET: Note2/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Note2/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Content")] Note2 note2)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(note2);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(note2);
-        }
-
-        // GET: Note2/Edit/5
-        public async Task<IActionResult> Edit(long? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var note2 = await _context.Note2s.FindAsync(id);
-            if (note2 == null)
-            {
-                return NotFound();
-            }
-            return View(note2);
-        }
-
-        // POST: Note2/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Id,Content")] Note2 note2)
+        // PUT: api/Note2/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutNote2(long id, Note2 note2)
         {
             if (id != note2.Id)
             {
-                return NotFound();
+                return BadRequest();
             }
 
-            if (ModelState.IsValid)
+            _context.Entry(note2).State = EntityState.Modified;
+
+            try
             {
-                try
-                {
-                    _context.Update(note2);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!Note2Exists(note2.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                await _context.SaveChangesAsync();
             }
-            return View(note2);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!Note2Exists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
-        // GET: Note2/Delete/5
-        public async Task<IActionResult> Delete(long? id)
+        // POST: api/Note2
+        [HttpPost]
+        public async Task<ActionResult<Note2>> PostNote2(Note2 note2)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            _context.Note2.Add(note2);
+            await _context.SaveChangesAsync();
 
-            var note2 = await _context.Note2s
-                .FirstOrDefaultAsync(m => m.Id == id);
+            return CreatedAtAction(nameof(GetNote2), new { id = note2.Id }, note2);
+        }
+
+        // DELETE: api/Note2/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteNote2(long id)
+        {
+            var note2 = await _context.Note2.FindAsync(id);
             if (note2 == null)
             {
                 return NotFound();
             }
 
-            return View(note2);
-        }
-
-        // POST: Note2/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(long id)
-        {
-            var note2 = await _context.Note2s.FindAsync(id);
-            if (note2 != null)
-            {
-                _context.Note2s.Remove(note2);
-            }
-
+            _context.Note2.Remove(note2);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            return NoContent();
         }
 
         private bool Note2Exists(long id)
         {
-            return _context.Note2s.Any(e => e.Id == id);
+            return _context.Note2.Any(e => e.Id == id);
         }
     }
 }

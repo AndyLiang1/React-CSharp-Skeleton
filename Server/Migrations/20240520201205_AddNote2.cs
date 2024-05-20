@@ -5,13 +5,13 @@
 namespace Server.Migrations
 {
     /// <inheritdoc />
-    public partial class Note2 : Migration
+    public partial class AddNote2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Note2s",
+                name: "Note2",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
@@ -20,7 +20,7 @@ namespace Server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Note2s", x => x.Id);
+                    table.PrimaryKey("PK_Note2", x => x.Id);
                 });
         }
 
@@ -28,7 +28,7 @@ namespace Server.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Note2s");
+                name: "Note2");
         }
     }
 }
