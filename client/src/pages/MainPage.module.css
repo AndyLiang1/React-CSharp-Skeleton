@@ -1,0 +1,13 @@
+.nav_bar {
+    height: 50px;
+    width: 100vw;
+
+    background: red;
+
+}
+
+.first_part {
+    height:100%;
+    width:30%;
+    background: green;
+}

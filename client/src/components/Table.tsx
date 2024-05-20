@@ -32,7 +32,8 @@ export function Table(props: ITableProps) {
     if (props.tableData?.length) {
       const result = props.tableData.map((row, index) => {
         const oneRow = Object.keys(row).map((key, index) => {
-          return <td key = {index}>{row[key]}</td>;
+          
+          return <td key = {index}>{row[key].toString()}</td>;
         });
         
         return <tr key = {index}>{oneRow}</tr>;

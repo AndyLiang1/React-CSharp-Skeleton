@@ -10,6 +10,7 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<TodoItem> TodoItems {get; set;} = null!;
     public DbSet<TodoItem> Note {get; set;} = null!;
+    public DbSet<Note2> Note2s {get; set;} = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

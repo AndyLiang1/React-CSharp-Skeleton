@@ -4,6 +4,7 @@ import { getTodos } from '../APIs';
 import { Button, Table } from '../components';
 import { FormState, TodoItem } from '../types';
 import { TodoItemForm } from "../Forms/TodoItemForms"
+import styles from "./MainPage.module.css"
 export interface IMainPageProps {
 }
 
@@ -41,6 +42,9 @@ export function MainPage (props: IMainPageProps) {
         <Button onClick = {() => handleAddEditClicked(FormState.Add)}>Add</Button>
         <Button onClick = {() => handleAddEditClicked(FormState.Edit)}>Edit</Button>
         {displayForm && <TodoItemForm state = {formState} refetch = {initTable}></TodoItemForm>}
+        <div className={styles.nav_bar}>
+          <div className={styles.first_part}></div>
+        </div>
     </div>
   );
 }
